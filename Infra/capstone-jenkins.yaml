@@ -60,7 +60,7 @@ Resources:
         Fn::Base64: !Sub |
           #!/bin/bash
           sudo apt-get update -y
-          sudo apt-get install default-jdk gnupg2 wget -y
+          sudo apt-get install default-jdk gnupg2 awscli wget -y
           cd /home/ubuntu
           wget -q -O - https://pkg.jenkins.io/debian/jenkins.io.key | sudo apt-key add -
           sudo sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
