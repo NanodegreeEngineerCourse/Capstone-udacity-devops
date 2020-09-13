@@ -37,7 +37,6 @@ pipeline {
       steps {
         withAWS(credentials: 'aws-credentials', region: eksRegion) {
           sh 'aws eks --region=${eksRegion} update-kubeconfig --name ${eksClusterName}'
-          sh 'kubectl config use-context arn:aws:eks:eu-west-1:702861778326:cluster/capstone-cluster'
           sh 'kubectl apply -f k8s/deployment.yaml'
           sh 'kubectl get pods'
         }
@@ -45,30 +44,22 @@ pipeline {
       }
     }
 
-    stage('K8S Deleting Pods') {
+    stage('K8S Check Pods Status') {
       steps {
         withAWS(credentials: 'aws-credentials', region: eksRegion) {
-          sh 'aws eks --region=${eksRegion} update-kubeconfig --name capstonenenefox'
-          sh 'kubectl apply -f k8s/deployment.yaml'
+          sh 'aws eks --region=${eksRegion} update-kubeconfig --name ${eksClusterName}'
           sh 'kubectl get pods'
+  
         }
 
       }
     }
 
-    stage('K8S Deleting Pods2') {
-      steps {
-        withAWS(credentials: 'aws-credentials', region: eksRegion) {
-          sh 'aws eks --region=${eksRegion} update-kubeconfig --name capstonenenefox'
-          sh 'kubectl get pods'
-        }
-
-      }
-    }
+    
 
   }
   environment {
-    eksClusterName = 'capstone-cluster'
+    eksClusterName = 'capstonenenefox'
     eksRegion = 'eu-west-1'
     dockerHub = 'nenefox'
     dockerImage = 'capstone'
