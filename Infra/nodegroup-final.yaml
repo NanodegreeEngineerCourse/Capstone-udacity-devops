@@ -135,7 +135,7 @@ Resources:
             - Arn
         ImageId: ami-0e7c6091d33e3debd
         InstanceType: t2.small
-        KeyName: uc-capstone-keyname
+        KeyName: capstone-keyname
         MetadataOptions:
           HttpPutResponseHopLimit: 2
           HttpTokens: optional

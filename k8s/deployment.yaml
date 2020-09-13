@@ -28,7 +28,7 @@ spec:
     spec:
       containers:
       - name: lp-capstone-pod
-        image: nenefox/creator
+        image: nenefox/capstone:latest
         imagePullPolicy: Always
         ports:
         - containerPort: 80
