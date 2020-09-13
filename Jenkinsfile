@@ -49,8 +49,17 @@ pipeline {
       steps {
         withAWS(credentials: 'aws-credentials', region: eksRegion) {
           sh 'aws eks --region=${eksRegion} update-kubeconfig --name capstonenenefox'
-          sh 'sleep 5'
           sh 'kubectl apply -f k8s/deployment.yaml'
+          sh 'kubectl get pods'
+        }
+
+      }
+    }
+
+    stage('K8S Deleting Pods2') {
+      steps {
+        withAWS(credentials: 'aws-credentials', region: eksRegion) {
+          sh 'aws eks --region=${eksRegion} update-kubeconfig --name capstonenenefox'
           sh 'kubectl get pods'
         }
 
