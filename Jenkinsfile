@@ -49,7 +49,7 @@ pipeline {
       steps {
         withAWS(credentials: 'aws-credentials', region: eksRegion) {
           sh 'aws eks --region=${eksRegion} update-kubeconfig --name ${eksClusterName}'
-          sh 'kubectl delete pods --all'
+          sh 'kubectl get pods'
         }
 
       }
