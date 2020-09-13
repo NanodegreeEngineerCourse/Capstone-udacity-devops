@@ -22,10 +22,19 @@ Parameters:
     Type: String
     Default: 95.61.17.210/32
 
+
   KeyJenkinsSSH:
     Description: KeyName to access jenkins host
     Type: "AWS::EC2::KeyPair::KeyName"
     Default: capstone-keyname
+
+  VPCID:
+    Description: ID of VPC to deploy the machine
+    Type: String
+  
+  SUBNETID:
+    Description: ID of the public subnet to deploy the jenkins machine
+    Type: String
 
 Mappings:
   CapstoneRegion:
@@ -37,9 +46,7 @@ Resources:
     Type: AWS::EC2::SecurityGroup
     Properties:
       GroupDescription: Allow http to ec2 and SHH access
-      VpcId:
-        Fn::ImportValue:
-          !Sub "${EnvironmentName}-VPC"
+      VpcId: !Ref VPCIP
       SecurityGroupIngress:
         - IpProtocol: tcp
           FromPort: 8080
@@ -71,9 +78,7 @@ Resources:
           sudo systemctl status jenkins
       SecurityGroupIds:
         - Ref: CapstoneSG
-      SubnetId:
-        Fn::ImportValue: 
-          !Sub "${EnvironmentName}-PublicSubnet1"
+      SubnetId: !Ref SUBNETID
       BlockDeviceMappings:
         - DeviceName: "/dev/sdk"
           Ebs:

@@ -1,0 +1,48 @@
+pipeline {
+	agent any
+	stages {
+
+		stage('Create kubernetes cluster') {
+			steps {
+				withAWS(region:'${eksRegion}', credentials:'aws-credentials') {
+					sh '''
+
+                        eksctl create cluster \
+                        --name capstonenenefox \
+                        --version 1.17 \
+                        --nodegroup-name standard-workers \
+                        --node-type t2.small \
+                        --nodes 2 \
+                        --nodes-min 1 \
+                        --nodes-max 3 \
+                        --node-ami auto \
+                        --region eu-west-1 \
+                        --zones eu-west-1a \
+                        --zones eu-west-1b \
+                        --zones eu-west-1c \
+                        --ssh-access \
+                        --ssh-public-key=capstone-keyname
+
+					'''
+				}
+			}
+		}
+
+		
+
+		stage('Create conf file cluster') {
+			steps {
+				withAWS(region:'${eksRegion}', credentials:'aws-credentials') {
+					sh '''
+						aws eks --region us-east-1 update-kubeconfig --name ${eksClusterName}
+					'''
+				}
+			}
+		}
+
+	}
+    environment {
+    eksClusterName = 'CapstoneCluster'
+    eksRegion = 'eu-west-1'
+  }
+}
