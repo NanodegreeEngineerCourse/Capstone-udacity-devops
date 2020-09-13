@@ -11,7 +11,7 @@ pipeline {
     stage('Docker build') {
       steps {
         script {
-            dockerImage = docker.build registry + ":$BUILD_NUMBER"
+            dockerImage = docker.build registry + ":latest"
         }
       }
     }
@@ -29,7 +29,7 @@ pipeline {
 
     stage('Scan Dockerfile to find vulnerabilities') {
       steps {
-        aquaMicroscanner(imageName: "nenefox/capstone:$BUILD_NUMBER", notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html')
+        aquaMicroscanner(imageName: "nenefox/capstone:latest", notCompliesCmd: 'exit 4', onDisallowed: 'fail', outputFormat: 'html')
       }
     }
 
